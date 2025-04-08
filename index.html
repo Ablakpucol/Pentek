@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Péntek</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mindjárt péntek</h1>
+    <label for="name">Írd be a neved:</label>
+    <input type="text" id="name" placeholder="Név">
+    <button onclick="calculateTime()">Számolj!</button>
+    <p id="result"></p>
+
+    <script>
+        function calculateTime() {
+            const name = document.getElementById("name").value.trim();
+            if (!name) {
+                alert("Kérlek, írd be a neved!");
+                return;
+            }
+
+            const now = new Date();
+            const currentDay = now.getDay(); // 0 = vasárnap, ..., 5 = péntek, 6 = szombat
+            let daysUntilFriday = (5 - currentDay + 7) % 7;
+            if (daysUntilFriday === 0) {
+                daysUntilFriday = 7;
+            }
+
+            const nextFriday = new Date(now);
+            nextFriday.setDate(now.getDate() + daysUntilFriday);
+            nextFriday.setHours(0, 0, 0, 0); // A következő péntek nap kezdete (éjfél)
+
+            const msUntilFriday = nextFriday - now;
+            const hoursUntilFriday = Math.floor(msUntilFriday / (1000 * 60 * 60));
+            const remainingDays = Math.floor(hoursUntilFriday / 24);
+            const remainingHours = hoursUntilFriday % 24;
+
+            document.getElementById("result").textContent = `Szia ${name}, ${remainingDays} nap és ${remainingHours} óra van hátra a következő péntekig!`;
+        }
+    </script>
+</body>
+</html>
